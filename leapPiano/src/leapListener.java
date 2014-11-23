@@ -25,10 +25,6 @@ class leapListener extends Listener {
     @Override
 	public void onConnect(Controller controller) {
         System.out.println("Connected");
-        controller.enableGesture(Gesture.Type.TYPE_SWIPE);
-        controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
-        controller.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
-        controller.enableGesture(Gesture.Type.TYPE_KEY_TAP);
     }
 
     @Override
@@ -44,7 +40,6 @@ class leapListener extends Listener {
     public float[][] currentFingerTips = new float[10][3];
     public float[][] previousFingerTips = new float[10][3];
     public pianoComponent pComp = new pianoComponent();
-
     
 	@Override
 	public void onFrame(Controller controller) {
@@ -55,21 +50,6 @@ class leapListener extends Listener {
         FingerList previousFingers = previous_frame.fingers();
             
         this.pComp.updateData(currentFingers, previousFingers);
-        
-        GestureList gestures = current_frame.gestures();
-        for (int i = 0; i < gestures.count(); i++) {
-            Gesture gesture = gestures.get(i);
-
-            switch (gesture.type()) {
-                case TYPE_SWIPE:
-		            break;
-		            
-		        case TYPE_SCREEN_TAP:
-		            break;
-		                         
-                default:
-                    break;
-            }
-        }
+               
     }
 }

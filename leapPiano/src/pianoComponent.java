@@ -1,7 +1,11 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.io.File;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JComponent;
 
 import com.leapmotion.leap.Finger;
@@ -12,7 +16,9 @@ public class pianoComponent extends JComponent {
 	
 	private FingerList currentFingers;
 	private FingerList previousFingers;
-
+	private String[] allSounds = {"C3","D3", "E3", "F3", "G3", "A3", "B3", "C4","D4", "E4", "F4", "G4", "A4", "B4", "C5","D5", "E5", "F5", "G5", "A5", "B5"};
+	private boolean[] allSoundsBools = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+	
 	public pianoComponent() {
 		
 	}
@@ -20,14 +26,12 @@ public class pianoComponent extends JComponent {
 	public void updateData(FingerList currentFingers, FingerList previousFingers) {
 		this.currentFingers = currentFingers;
 		this.previousFingers = previousFingers;
-		if(this.currentFingers.count() == 0) {
-			System.out.println("no fingers detected");
-		} else {
-			for(Finger finger : this.currentFingers) {
-				for(Finger prevFinger : this.previousFingers) {
-					if(Math.abs(finger.tipPosition().getY() - prevFinger.tipPosition().getY()) > 35) {
-						System.out.println("YOU PRESSED IT. HOORAY");
-					}
+		
+		for(Finger finger : this.currentFingers) {
+			System.out.println(finger.tipPosition());
+			for(Finger prevFinger : this.previousFingers) {
+				if(Math.abs(finger.tipPosition().getY() - prevFinger.tipPosition().getY()) > 35) {
+					System.out.println("YOU PRESSED IT. HOORAY");
 				}
 			}
 		}
@@ -46,8 +50,42 @@ public class pianoComponent extends JComponent {
 		}
 	
     }
+		
+	public void playSound(String sound) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(sound + ".wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
+            
+            for(int note = 0; note < this.allSounds.length; note++) {
+            	if(sound == this.allSounds[note]) {
+            		this.allSoundsBools[note] = true;
+            	}
+            }
+            
+            // Create a new thread here
+            for(int note = 0; note < this.allSounds.length; note++) {
+            	if(sound == this.allSounds[note]) {
+            		if(this.allSoundsBools[note] == false) {
+            			clip.stop();
+            		}
+            	}
+            }
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+    }
 	
-	
+	public void stopSound(String sound) {
+		for(int note = 0; note < this.allSounds.length; note++) {
+        	if(sound == this.allSounds[note]) {
+        		this.allSoundsBools[note] = false;
+        	}
+        }
+	}
 	
 }
 	
