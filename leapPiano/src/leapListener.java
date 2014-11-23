@@ -41,25 +41,20 @@ class leapListener extends Listener {
         System.out.println("Exited");
     }
 
-    public Hand hand;
-    public int[][] keys;
     public float[][] currentFingerTips = new float[10][3];
     public float[][] previousFingerTips = new float[10][3];
+    public pianoComponent pComp = new pianoComponent();
+
     
 	@Override
 	public void onFrame(Controller controller) {
-        Frame current_frame = controller.frame();    // 3.0f , 1f, .2f also works okay
+        Frame current_frame = controller.frame();
         Frame previous_frame = controller.frame(1);
         
         FingerList currentFingers = current_frame.fingers();
         FingerList previousFingers = previous_frame.fingers();
-        
-        for(Finger finger : currentFingers) {
-        	System.out.println(finger.tipPosition());
-        }
-        
-        
-                
+            
+        this.pComp.updateData(currentFingers, previousFingers);
         
         GestureList gestures = current_frame.gestures();
         for (int i = 0; i < gestures.count(); i++) {
