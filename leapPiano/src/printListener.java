@@ -19,7 +19,7 @@ public class printListener implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		 String path = "C:/Users/efronbs/git/LeapPiano/leapPiano/res/RecordedSound";
+		 String path = "C:/GitHub/LeapPiano/leapPiano/res/RecordedSound";
 		 try {
 			FileWriter write = new FileWriter(path, false);
 			write.write(this.record.toString());

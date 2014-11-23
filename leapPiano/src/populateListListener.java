@@ -20,7 +20,7 @@ public class populateListListener implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		 String path = "C:/Users/efronbs/git/LeapPiano/leapPiano/res/RecordedSound";
+		 String path = "C:/GitHub/LeapPiano/leapPiano/res/RecordedSound";
 		 File file = new File(path);
 		 try {
 
