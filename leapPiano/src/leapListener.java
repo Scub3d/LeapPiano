@@ -41,6 +41,8 @@ class leapListener extends Listener {
     public float[][] previousFingerTips = new float[10][3];
     public pianoComponent pComp = new pianoComponent();
     
+    public int counter = 0;
+    
 	@Override
 	public void onFrame(Controller controller) {
         Frame current_frame = controller.frame();
@@ -49,7 +51,11 @@ class leapListener extends Listener {
         FingerList currentFingers = current_frame.fingers();
         FingerList previousFingers = previous_frame.fingers();
             
-        this.pComp.updateData(currentFingers, previousFingers);
+        this.counter++;
+        
+        if(this.counter % 8 == 0) {        
+        	this.pComp.updateData(currentFingers, previousFingers);
+        }
                
     }
 }
